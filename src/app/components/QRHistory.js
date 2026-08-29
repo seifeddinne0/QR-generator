@@ -150,7 +150,6 @@ export default function QRHistory() {
                 <div className="card text-center py-12">
                     {history.length === 0 ? (
                         <>
-                            <div className="text-6xl mb-4">📦</div>
                             <h3 className="text-xl font-semibold mb-2">No History Yet</h3>
                             <p className="text-secondary">
                                 Generated QR codes will appear here

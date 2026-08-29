@@ -128,20 +128,20 @@ export default function QRScanner() {
                             </div>
                         </div>
 
-                        <div className="flex gap-3 justify-center flex-wrap">
-                            <button onClick={handleCopy} className="btn btn-secondary">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
+                            <button onClick={handleCopy} className="btn btn-secondary w-full sm:w-auto">
                                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                                 {copied ? 'Copied!' : 'Copy'}
                             </button>
 
                             {dataType === 'url' && (
-                                <button onClick={handleOpenUrl} className="btn btn-primary">
+                                <button onClick={handleOpenUrl} className="btn btn-primary w-full sm:w-auto">
                                     <ExternalLink className="w-4 h-4" />
                                     Open URL
                                 </button>
                             )}
 
-                            <button onClick={() => setScannedData(null)} className="btn btn-ghost">
+                            <button onClick={() => setScannedData(null)} className="btn btn-ghost w-full sm:w-auto">
                                 Scan Another
                             </button>
                         </div>

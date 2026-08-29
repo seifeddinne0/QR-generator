@@ -33,12 +33,12 @@ export default function QRTypes({ onDataChange }) {
     return (
         <div className="space-y-6">
             {/* Type Tabs */}
-            <div className="tabs">
+            <div className="tabs flex-wrap">
                 {types.map(({ id, label, icon: Icon }) => (
                     <button
                         key={id}
                         onClick={() => handleTypeChange(id)}
-                        className={`tab ${activeType === id ? 'active' : ''}`}
+                        className={`tab flex-1 min-w-[110px] ${activeType === id ? 'active' : ''}`}
                     >
                         <Icon className="w-4 h-4" />
                         {label}

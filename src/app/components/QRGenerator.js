@@ -107,7 +107,6 @@ export default function QRGenerator({ data, type }) {
     if (!data) {
         return (
             <div className="card text-center py-12">
-                <div className="text-6xl mb-4">📱</div>
                 <p className="text-secondary">Enter data to generate QR code</p>
             </div>
         );
@@ -135,12 +134,12 @@ export default function QRGenerator({ data, type }) {
 
                 {/* Action Buttons */}
                 {qrCodeUrl && (
-                    <div className="flex gap-3 justify-center mt-6">
-                        <button onClick={handleDownload} className="btn btn-primary">
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+                        <button onClick={handleDownload} className="btn btn-primary w-full sm:w-auto">
                             <Download className="w-4 h-4" />
                             Download
                         </button>
-                        <button onClick={handleCopy} className="btn btn-secondary">
+                        <button onClick={handleCopy} className="btn btn-secondary w-full sm:w-auto">
                             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                             {copied ? 'Copied!' : 'Copy Data'}
                         </button>
@@ -169,7 +168,7 @@ export default function QRGenerator({ data, type }) {
                     </div>
 
                     {/* Colors */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium mb-2">
                                 Foreground Color
@@ -178,6 +177,7 @@ export default function QRGenerator({ data, type }) {
                                 type="color"
                                 value={fgColor}
                                 onChange={(e) => setFgColor(e.target.value)}
+                                className="w-full h-12 rounded-lg border border-border-color bg-transparent p-1"
                             />
                         </div>
                         <div>
@@ -188,6 +188,7 @@ export default function QRGenerator({ data, type }) {
                                 type="color"
                                 value={bgColor}
                                 onChange={(e) => setBgColor(e.target.value)}
+                                className="w-full h-12 rounded-lg border border-border-color bg-transparent p-1"
                             />
                         </div>
                     </div>
