@@ -24,9 +24,13 @@ export default function QRScanner() {
         setScanning(true);
         setScannedData(null);
 
+        // compute a responsive qrbox size based on the viewport
+        const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 360;
+        const qrboxSize = Math.max(200, Math.min(360, Math.floor(viewportWidth * 0.7)));
+
         const config = {
             fps: 10,
-            qrbox: { width: 250, height: 250 },
+            qrbox: { width: qrboxSize, height: qrboxSize },
             aspectRatio: 1.0,
         };
 

@@ -122,12 +122,12 @@ export default function QRGenerator({ data, type }) {
                         <div className="spinner"></div>
                     </div>
                 ) : qrCodeUrl ? (
-                    <div className="inline-block p-4 bg-white rounded-xl">
+                    <div className="inline-block p-4 bg-white rounded-xl qr-preview">
                         <img
                             src={qrCodeUrl}
                             alt="QR Code"
                             className="mx-auto"
-                            style={{ width: size, height: size }}
+                            style={{ width: size, maxWidth: '100%', height: 'auto' }}
                         />
                     </div>
                 ) : null}
