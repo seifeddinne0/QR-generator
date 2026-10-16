@@ -4,7 +4,8 @@ import ThemeToggle from './components/ThemeToggle';
 import QRTypes from './components/QRTypes';
 import QRGenerator from './components/QRGenerator';
 import QRScanner from './components/QRScanner';
-import { QrCode, ScanLine } from 'lucide-react';
+import VantaNet from './components/VantaNet';
+import { QrCode, ScanLine, Palette, Image, Layers } from 'lucide-react';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('generate');
@@ -22,17 +23,18 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen gradient-bg">
+    <div className="min-h-screen app-shell">
+      <VantaNet />
       {/* Header */}
-      <header className="glass-strong sticky top-0 z-50">
+      <header className="site-header sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-accent-primary to-accent-secondary p-3 rounded-xl shadow-glow">
+              <div className="brand-mark p-3 rounded-xl">
                 <QrCode className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gradient">QR Master</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-accent-primary">QR Master</h1>
                 <p className="text-[11px] sm:text-xs text-secondary">Professional QR Code Suite</p>
               </div>
             </div>
@@ -83,35 +85,38 @@ export default function Home() {
 
         </div>
 
-        {/* Features Banner */}
         {activeTab === 'generate' && (
-          <div className="mt-12 glass rounded-2xl p-4 sm:p-8 animate-fade-in">
-            <div className="flex items-center gap-3 mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold">Premium Features</h2>
+          <section className="feature-strip mt-10" aria-labelledby="features-title">
+            <div className="feature-strip-heading">
+              <span className="feature-kicker">Built in</span>
+              <h2 id="features-title">Everything you need to make a better QR code</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                
-                <h3 className="font-semibold mb-2">Full Customization</h3>
-                <p className="text-sm text-secondary">
-                  Customize colors, size, and error correction levels
-                </p>
+            <div className="feature-list">
+              <div className="feature-item">
+                <Palette className="feature-icon" aria-hidden="true" />
+                <div>
+                  <h3>Full customization</h3>
+                  <p>Adjust size, colors, and error correction.</p>
+                </div>
               </div>
-              <div className="text-center">
-                <h3 className="font-semibold mb-2">Logo Embedding</h3>
-                <p className="text-sm text-secondary">
-                  Add your brand logo to QR codes
-                </p>
+              <div className="feature-item">
+                <Image className="feature-icon" aria-hidden="true" />
+                <div>
+                  <h3>Logo embedding</h3>
+                  <p>Add a recognizable mark to your code.</p>
+                </div>
               </div>
-              <div className="text-center">
-                <h3 className="font-semibold mb-2">Multiple Types</h3>
-                <p className="text-sm text-secondary">
-                  Generate QR codes for WiFi, vCard, Email, and more
-                </p>
+              <div className="feature-item">
+                <Layers className="feature-icon" aria-hidden="true" />
+                <div>
+                  <h3>Multiple formats</h3>
+                  <p>Create WiFi, contact, email, and more.</p>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
         )}
+
       </main>
 
       {/* Footer */}

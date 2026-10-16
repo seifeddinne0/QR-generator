@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { Camera, Copy, ExternalLink, Check, X } from 'lucide-react';
 import { copyToClipboard, isValidUrl } from '../utils/qrHelpers';
 
@@ -20,27 +20,54 @@ export default function QRScanner() {
         };
     }, []);
 
-    const startScanning = () => {
-        setScanning(true);
-        setScannedData(null);
+    useEffect(() => {
+        if (!scanning || typeof document === 'undefined') return undefined;
 
-        // compute a responsive qrbox size based on the viewport
-        const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 360;
+        const readerElement = document.getElementById('qr-reader');
+        if (!readerElement) return undefined;
+
+        // The reader element must exist before html5-qrcode is initialized.
+        const viewportWidth = window.innerWidth;
         const qrboxSize = Math.max(200, Math.min(360, Math.floor(viewportWidth * 0.7)));
-
+        const scanner = new Html5Qrcode('qr-reader');
         const config = {
             fps: 10,
             qrbox: { width: qrboxSize, height: qrboxSize },
             aspectRatio: 1.0,
         };
 
-        html5QrcodeScannerRef.current = new Html5QrcodeScanner(
-            "qr-reader",
-            config,
-            false
-        );
+        html5QrcodeScannerRef.current = scanner;
+        const startCamera = async () => {
+            try {
+                const cameras = await Html5Qrcode.getCameras();
+                const rearCamera = cameras.find(({ label }) => /back|rear|environment/iu.test(label));
+                const cameraId = rearCamera?.id || cameras[0]?.id;
 
-        html5QrcodeScannerRef.current.render(onScanSuccess, onScanError);
+                if (!cameraId) {
+                    throw new Error('No camera was found on this device.');
+                }
+
+                await scanner.start(cameraId, config, onScanSuccess, onScanError);
+            } catch (error) {
+                console.error('Unable to start the camera:', error);
+                html5QrcodeScannerRef.current = null;
+                setScanning(false);
+            }
+        };
+
+        startCamera();
+
+        return () => {
+            if (html5QrcodeScannerRef.current === scanner) {
+                html5QrcodeScannerRef.current = null;
+                scanner.stop().catch(() => {});
+            }
+        };
+    }, [scanning]);
+
+    const startScanning = () => {
+        setScannedData(null);
+        setScanning(true);
     };
 
     const onScanSuccess = (decodedText, decodedResult) => {
@@ -54,7 +81,7 @@ export default function QRScanner() {
 
     const stopScanning = () => {
         if (html5QrcodeScannerRef.current) {
-            html5QrcodeScannerRef.current.clear();
+            html5QrcodeScannerRef.current.stop().catch(() => {});
             html5QrcodeScannerRef.current = null;
         }
         setScanning(false);
@@ -76,6 +103,12 @@ export default function QRScanner() {
         }
     };
 
+    const getResultUrl = (data) => {
+        if (!data) return '';
+        if (/^(https?:\/\/|mailto:|tel:|sms:)/iu.test(data)) return data;
+        return isValidUrl(`https://${data}`) ? `https://${data}` : '';
+    };
+
     const detectDataType = (data) => {
         if (!data) return 'unknown';
         if (isValidUrl(data)) return 'url';
@@ -88,6 +121,7 @@ export default function QRScanner() {
     };
 
     const dataType = detectDataType(scannedData);
+    const resultUrl = getResultUrl(scannedData);
 
     return (
         <div className="space-y-6">
@@ -130,6 +164,17 @@ export default function QRScanner() {
                             <div className="bg-bg-secondary rounded-lg p-4 text-left">
                                 <p className="text-sm font-mono break-all">{scannedData}</p>
                             </div>
+                            {resultUrl && (
+                                <a
+                                    href={resultUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="btn btn-primary w-full mt-4"
+                                >
+                                    <ExternalLink className="w-4 h-4" />
+                                    Open detected link
+                                </a>
+                            )}
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">

@@ -22,13 +22,15 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="btn btn-ghost p-3 rounded-full"
+            type="button"
+            className="theme-toggle"
             aria-label="Toggle theme"
+            title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
         >
             {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-yellow-400" />
+                <Sun className="w-5 h-5" />
             ) : (
-                <Moon className="w-5 h-5 text-indigo-600" />
+                <Moon className="w-5 h-5" />
             )}
         </button>
     );
